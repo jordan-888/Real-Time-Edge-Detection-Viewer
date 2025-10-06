@@ -1,0 +1,22 @@
+# Android
+*.iml
+.gradle
+/local.properties
+/.idea
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+
+# NDK
+obj/
+libs/
+
+# OpenCV (SDK should be configured locally)
+opencv-sdk/
+
+# Web
+web/node_modules/
+web/dist/
+web/package-lock.json
