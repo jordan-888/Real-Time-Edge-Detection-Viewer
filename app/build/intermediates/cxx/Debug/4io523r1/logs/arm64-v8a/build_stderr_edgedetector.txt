@@ -1,0 +1,1 @@
+ninja: error: '/sdk/native/libs/arm64-v8a/libopencv_java4.so', needed by '/Users/Dev/Real-Time_Edge_Detection_Viewer/app/build/intermediates/cxx/Debug/4io523r1/obj/arm64-v8a/libedgedetector.so', missing and no known rule to make it

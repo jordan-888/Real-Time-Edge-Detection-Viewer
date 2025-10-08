@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.edgedetector.app-merged_res-31:/drawable_ic_launcher_foreground.xml.flat",
+        "source": "com.edgedetector.app-main-33:/drawable/ic_launcher_foreground.xml"
+    },
+    {
+        "merged": "/Users/Dev/.gradle/daemon/8.2/com.edgedetector.app-merged_res-31:/mipmap-anydpi-v26_ic_launcher.xml.flat",
+        "source": "/Users/Dev/.gradle/daemon/8.2/com.edgedetector.app-main-33:/mipmap-anydpi-v26/ic_launcher.xml"
+    },
+    {
+        "merged": "/Users/Dev/.gradle/daemon/8.2/com.edgedetector.app-merged_res-31:/layout_activity_main.xml.flat",
+        "source": "/Users/Dev/.gradle/daemon/8.2/com.edgedetector.app-main-33:/layout/activity_main.xml"
+    }
+]
