@@ -38,14 +38,17 @@ class MainActivity : AppCompatActivity() {
         fpsText = findViewById(R.id.fpsText)
         toggleButton = findViewById(R.id.toggleButton)
         
+        Log.i(TAG, "MainActivity onCreate started")
+        
+        // Skip native processor for now to test OpenGL
         // Initialize native processor
-        try {
-            val version = NativeProcessor.getVersion()
-            Log.i(TAG, "Native library loaded: $version")
-            NativeProcessor.nativeInit()
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to load native library", e)
-        }
+        // try {
+        //     val version = NativeProcessor.getVersion()
+        //     Log.i(TAG, "Native library loaded: $version")
+        //     NativeProcessor.nativeInit()
+        // } catch (e: Exception) {
+        //     Log.e(TAG, "Failed to load native library", e)
+        // }
         
         // Setup OpenGL surface
         glSurfaceView.setEGLContextClientVersion(2)
@@ -53,11 +56,14 @@ class MainActivity : AppCompatActivity() {
         glSurfaceView.setRenderer(glRenderer)
         glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         
+        Log.i(TAG, "OpenGL setup complete")
+        
+        // Skip camera setup for now to test OpenGL
         // Setup camera manager
-        cameraManager = CameraManager(this)
-        cameraManager.frameCallback = { image ->
-            processFrame(image)
-        }
+        // cameraManager = CameraManager(this)
+        // cameraManager.frameCallback = { image ->
+        //     processFrame(image)
+        // }
         
         // Toggle button
         toggleButton.setOnClickListener {
@@ -66,12 +72,13 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "Filter ${if (filterEnabled) "enabled" else "disabled"}")
         }
         
+        // Skip camera permission for now
         // Check camera permission
-        if (checkCameraPermission()) {
-            startCamera()
-        } else {
-            requestCameraPermission()
-        }
+        // if (checkCameraPermission()) {
+        //     startCamera()
+        // } else {
+        //     requestCameraPermission()
+        // }
     }
     
     private fun processFrame(image: Image) {

@@ -11,32 +11,20 @@ class EdgeGLRenderer : GLSurfaceView.Renderer {
     private val TAG = "EdgeGLRenderer"
     
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
-        Log.i(TAG, "Surface created")
-        
+        Log.i(TAG, "Surface created - setting red background")
         // Set clear color to red for testing
         GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f)
-        
-        try {
-            NativeProcessor.onSurfaceCreated()
-        } catch (e: Exception) {
-            Log.e(TAG, "Native onSurfaceCreated failed", e)
-        }
+        Log.i(TAG, "Red color set")
     }
     
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         Log.i(TAG, "Surface changed: ${width}x${height}")
         GLES20.glViewport(0, 0, width, height)
-        
-        try {
-            NativeProcessor.onSurfaceChanged(width, height)
-        } catch (e: Exception) {
-            Log.e(TAG, "Native onSurfaceChanged failed", e)
-        }
+        Log.i(TAG, "Viewport set")
     }
     
     override fun onDrawFrame(gl: GL10?) {
         // Clear with red color for testing
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
-        // Rendering is handled in native code when frames are processed
     }
 }
