@@ -40,15 +40,14 @@ class MainActivity : AppCompatActivity() {
         
         Log.i(TAG, "MainActivity onCreate started")
         
-        // Skip native processor for now to test OpenGL
         // Initialize native processor
-        // try {
-        //     val version = NativeProcessor.getVersion()
-        //     Log.i(TAG, "Native library loaded: $version")
-        //     NativeProcessor.nativeInit()
-        // } catch (e: Exception) {
-        //     Log.e(TAG, "Failed to load native library", e)
-        // }
+        try {
+            val version = NativeProcessor.getVersion()
+            Log.i(TAG, "Native library loaded: $version")
+            NativeProcessor.nativeInit()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load native library", e)
+        }
         
         // Setup OpenGL surface
         glSurfaceView.setEGLContextClientVersion(2)
@@ -58,12 +57,10 @@ class MainActivity : AppCompatActivity() {
         
         Log.i(TAG, "OpenGL setup complete")
         
-        // Setup camera manager (without native processing for now)
+        // Setup camera manager
         cameraManager = CameraManager(this)
         cameraManager.frameCallback = { image ->
-            // Just log frame receipt, don't process yet
-            Log.d(TAG, "Camera frame received: ${image.width}x${image.height}")
-            image.close()
+            processFrame(image)
         }
         
         // Toggle button
