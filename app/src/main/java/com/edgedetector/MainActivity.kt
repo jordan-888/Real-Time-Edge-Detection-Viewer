@@ -58,12 +58,13 @@ class MainActivity : AppCompatActivity() {
         
         Log.i(TAG, "OpenGL setup complete")
         
-        // Skip camera setup for now to test OpenGL
-        // Setup camera manager
-        // cameraManager = CameraManager(this)
-        // cameraManager.frameCallback = { image ->
-        //     processFrame(image)
-        // }
+        // Setup camera manager (without native processing for now)
+        cameraManager = CameraManager(this)
+        cameraManager.frameCallback = { image ->
+            // Just log frame receipt, don't process yet
+            Log.d(TAG, "Camera frame received: ${image.width}x${image.height}")
+            image.close()
+        }
         
         // Toggle button
         toggleButton.setOnClickListener {
@@ -72,13 +73,12 @@ class MainActivity : AppCompatActivity() {
             Log.i(TAG, "Filter ${if (filterEnabled) "enabled" else "disabled"}")
         }
         
-        // Skip camera permission for now
         // Check camera permission
-        // if (checkCameraPermission()) {
-        //     startCamera()
-        // } else {
-        //     requestCameraPermission()
-        // }
+        if (checkCameraPermission()) {
+            startCamera()
+        } else {
+            requestCameraPermission()
+        }
     }
     
     private fun processFrame(image: Image) {
