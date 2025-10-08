@@ -1,8 +1,0 @@
-CMake Warning at CMakeLists.txt:15 (message):
-  OpenCV SDK not found at .  Please set OPENCV_SDK_PATH.
-
-
-CMake Warning at CMakeLists.txt:16 (message):
-  Download from: https://github.com/opencv/opencv/releases
-
-

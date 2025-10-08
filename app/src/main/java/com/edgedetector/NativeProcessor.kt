@@ -5,6 +5,7 @@ object NativeProcessor {
         System.loadLibrary("edgedetector")
     }
 
+    external fun getVersion(): String
     external fun nativeInit()
     external fun nativeDestroy()
     

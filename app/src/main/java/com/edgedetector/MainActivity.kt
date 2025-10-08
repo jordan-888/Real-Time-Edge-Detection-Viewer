@@ -34,19 +34,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        
         glSurfaceView = findViewById(R.id.glSurfaceView)
         fpsText = findViewById(R.id.fpsText)
         toggleButton = findViewById(R.id.toggleButton)
         
         // Initialize native processor
-        NativeProcessor.nativeInit()
+        try {
+            val version = NativeProcessor.getVersion()
+            Log.i(TAG, "Native library loaded: $version")
+            NativeProcessor.nativeInit()
+        } catch (e: Exception) {
+            Log.e(TAG, "Failed to load native library", e)
+        }
         
         // Setup OpenGL surface
         glSurfaceView.setEGLContextClientVersion(2)
         glRenderer = EdgeGLRenderer()
         glSurfaceView.setRenderer(glRenderer)
-        glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_WHEN_DIRTY
+        glSurfaceView.renderMode = GLSurfaceView.RENDERMODE_CONTINUOUSLY
         
         // Setup camera manager
         cameraManager = CameraManager(this)

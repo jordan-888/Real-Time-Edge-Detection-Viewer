@@ -1,5 +1,6 @@
 package com.edgedetector
 
+import android.opengl.GLES20
 import android.opengl.GLSurfaceView
 import android.util.Log
 import javax.microedition.khronos.egl.EGLConfig
@@ -11,15 +12,31 @@ class EdgeGLRenderer : GLSurfaceView.Renderer {
     
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         Log.i(TAG, "Surface created")
-        NativeProcessor.onSurfaceCreated()
+        
+        // Set clear color to red for testing
+        GLES20.glClearColor(1.0f, 0.0f, 0.0f, 1.0f)
+        
+        try {
+            NativeProcessor.onSurfaceCreated()
+        } catch (e: Exception) {
+            Log.e(TAG, "Native onSurfaceCreated failed", e)
+        }
     }
     
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
         Log.i(TAG, "Surface changed: ${width}x${height}")
-        NativeProcessor.onSurfaceChanged(width, height)
+        GLES20.glViewport(0, 0, width, height)
+        
+        try {
+            NativeProcessor.onSurfaceChanged(width, height)
+        } catch (e: Exception) {
+            Log.e(TAG, "Native onSurfaceChanged failed", e)
+        }
     }
     
     override fun onDrawFrame(gl: GL10?) {
+        // Clear with red color for testing
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
         // Rendering is handled in native code when frames are processed
     }
 }
