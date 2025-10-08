@@ -23,4 +23,5 @@ object NativeProcessor {
     
     external fun onSurfaceCreated()
     external fun onSurfaceChanged(width: Int, height: Int)
+    external fun onDrawFrame()
 }

@@ -21,12 +21,9 @@ Android app that processes camera frames with OpenCV and displays them using Ope
 
 ## Screenshots/Demo
 
-*Screenshots will be added here showing:*
-- *Camera preview with edge detection active*
-- *FPS counter and toggle button in action*
-- *Web viewer displaying processed frame statistics*
+![Android app edge detection preview](screenshots/android_app.jpeg)
 
-*(Note: Screenshots to be captured on physical device)*
+![Web viewer frame statistics](screenshots/web_app.png)
 
 ## Setup Instructions
 

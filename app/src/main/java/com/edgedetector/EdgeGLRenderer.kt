@@ -34,5 +34,11 @@ class EdgeGLRenderer : GLSurfaceView.Renderer {
     
     override fun onDrawFrame(gl: GL10?) {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT)
+
+        try {
+            NativeProcessor.onDrawFrame()
+        } catch (e: Exception) {
+            Log.e(TAG, "Native onDrawFrame failed", e)
+        }
     }
 }

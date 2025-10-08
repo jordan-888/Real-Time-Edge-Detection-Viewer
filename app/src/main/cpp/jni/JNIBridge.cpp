@@ -2,6 +2,8 @@
 #include <android/log.h>
 #include "ImageProcessor.h"
 #include "../gl/GLRenderer.h"
+#include <vector>
+#include <mutex>
 
 #define LOG_TAG "JNIBridge"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO, LOG_TAG, __VA_ARGS__)
@@ -9,6 +11,11 @@
 
 static ImageProcessor* g_processor = nullptr;
 static GLRenderer* g_renderer = nullptr;
+static std::vector<uint8_t> g_frameBuffer;
+static int g_frameWidth = 0;
+static int g_frameHeight = 0;
+static bool g_frameReady = false;
+static std::mutex g_frameMutex;
 
 extern "C" {
 
@@ -69,10 +76,14 @@ Java_com_edgedetector_NativeProcessor_processAndRender(
         // Process frame
         cv::Mat processed = g_processor->processFrame(rgbaMat, applyFilter);
 
-        // Render to OpenGL texture
+        // Stage processed frame for GL thread
         if (!processed.empty()) {
-            g_renderer->updateTexture(processed.data, processed.cols, processed.rows);
-            g_renderer->render();
+            std::lock_guard<std::mutex> lock(g_frameMutex);
+            g_frameWidth = processed.cols;
+            g_frameHeight = processed.rows;
+            size_t bytes = processed.total() * processed.elemSize();
+            g_frameBuffer.assign(processed.data, processed.data + bytes);
+            g_frameReady = true;
         }
 
     } catch (const std::exception& e) {
@@ -95,10 +106,34 @@ Java_com_edgedetector_NativeProcessor_onSurfaceCreated(JNIEnv* env, jobject /* t
 
 JNIEXPORT void JNICALL
 Java_com_edgedetector_NativeProcessor_onSurfaceChanged(JNIEnv* env, jobject /* this */, jint width, jint height) {
-    LOGI("Surface changed: %dx%d", width, height);
     if (g_renderer) {
         g_renderer->onSurfaceChanged(width, height);
     }
+}
+
+JNIEXPORT void JNICALL
+Java_com_edgedetector_NativeProcessor_onDrawFrame(JNIEnv* env, jobject /* this */) {
+    if (!g_renderer) {
+        return;
+    }
+
+    bool hasFrame = false;
+    {
+        std::lock_guard<std::mutex> lock(g_frameMutex);
+        if (g_frameReady && !g_frameBuffer.empty()) {
+            g_renderer->updateTexture(g_frameBuffer.data(), g_frameWidth, g_frameHeight);
+            g_frameReady = false;
+            hasFrame = true;
+        }
+    }
+
+    if (!hasFrame) {
+        // Still render to present the last texture or clear color
+        g_renderer->render();
+        return;
+    }
+
+    g_renderer->render();
 }
 
 } // extern "C"
